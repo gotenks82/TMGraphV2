@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Demo - Papa Parse</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, maximum-scale=1.0">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.3.3/papaparse.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
+
+	</head>
+	<body>
+
+	<div class="input-area" id="input-local" style="display: block;">
+							
+							<div class="text-center">
+								Seleziona il file con i dati di telemetria
+							</div>
+
+							<input type="file" id="files" multiple="false">
+						</div>
+                        <div>
+                            Asse X:
+                            <select id="xAxis">
+                                <option value="RPM" selected="selected">RPM (x1000)</option>
+                                <option value="TIME">Tempo</option>
+                            </select>
+                        </div>
+                        <div>
+                            Risoluzione (campioni al secondo):
+                            <select id="resolution">
+                                <option value=10>10</option>
+                                <option value=5>5</option>
+                                <option value=2 selected="selected">2</option>
+                                <option value=1>1</option>
+                            </select>
+                        </div>
+
+						<button id="submit" class="green">Render</button>
+                        <div>
+                        <table id="info" style="position: absolute; left: 70%; top: 1%; font-size: 12px; line-height: 0.8;">
+                        </table>    
+                        </div>
+                        <div style="width:100%;">
+                            <canvas id="canvas"></canvas>
+                        </div>
+	</body>
+	<script>
+    var config = {
+            type: 'line',
+            data: {},
+            options: {
+                responsive: true,
+                title:{
+                    display:false
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false
+                },
+                hover: {
+                    mode: 'index',
+                    intersect: false
+                },
+                elements: {
+                    line: {
+                        tension: 0, // disables bezier curves
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: $("#xAxis option:selected").text()
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Valore'
+                        }
+                    }]
+                }
+            }
+        };
+
+	function errorFn(err, file)
+{
+	end = now();
+	console.log("ERROR:", err, file);
+	enableButton();
+}
+	function buildConfig()
+{
+	return {
+		delimiter: ',',
+		header: false,
+		dynamicTyping: true,
+		skipEmptyLines: true,
+		preview: 0,
+		step: undefined,
+		encoding: undefined,
+		worker: false,
+		comments: $('#comments').val(),
+		complete: completeFn,
+		error: errorFn
+	};
+}
+function enableButton()
+{
+	$('#submit').prop('disabled', false);
+}
+
+function completeFn(results)
+{
+    var resolution = $('#resolution').val();
+    var xAxis = $('#xAxis').val();
+    var infoData = results.data.filter(function(elem) { return  elem.length < 5 });
+    $("#info").empty();
+    infoData.forEach(function(elem){
+        $("#info").append("<tr><td>"+elem[0]+":</td><td style='border: 1px solid; padding: 3px;'>"+elem[1]+"</td></tr>");
+    });
+    var data = results.data.filter(function(elem) { return  elem.length == 5 && Number.isInteger(elem[0]*resolution)});
+    var timeSeries = data.map(function(elem) { return elem[0]});
+    var rpmSeries = data.map(function(elem) { return Math.round(elem[1])/1000});
+    var coppiaSeries = data.map(function(elem) { return elem[3].toFixed(3)});
+    var cavalliSeries = data.map(function(elem) { return elem[4].toFixed(3)});
+    var lineChartData = {
+        labels: xAxis == "TIME" ? timeSeries : rpmSeries,
+        datasets: [
+        {
+            label: "Cavalli",
+            borderColor: 'blue',
+            backgroundColor: 'blue',
+            fill: false,
+            data: cavalliSeries
+        },{
+            label: "Coppia",
+            borderColor: 'red',
+            backgroundColor: 'red',
+            fill: false,
+            data: coppiaSeries
+        }]
+    };
+    if (xAxis == "TIME") {
+        lineChartData.datasets.push({
+            label: "RPM (x1000)",
+            borderColor: 'green',
+            backgroundColor: 'green',
+            fill: false,
+            data: rpmSeries
+        })
+    }
+    config.data = lineChartData
+    config.options.scales.xAxes[0].scaleLabel.labelString = $("#xAxis option:selected").text();
+    window.myLine.update();
+	console.log("    Results:", results);
+
+}
+
+		$(function()
+{
+    var ctx = document.getElementById("canvas").getContext("2d");
+    window.myLine = new Chart(ctx, config);
+$('#submit').click(function()
+	{
+	
+		stepped = 0;
+		rowCount = 0;
+		errorCount = 0;
+		firstError = undefined;
+
+		var config = buildConfig();
+		var input = $('#input').val();
+
+		if (!$('#files')[0].files.length)
+			{
+				alert("Please choose at least one file to parse.");
+				return enableButton();
+			}
+			
+			$('#files').parse({
+				config: config,
+				error: function(err, file)
+				{
+					console.log("ERROR:", err, file);
+					firstError = firstError || err;
+					errorCount++;
+				}
+			});
+
+	});
+});
+
+
+	</script>
+	
+</html>
