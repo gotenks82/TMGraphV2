@@ -7,46 +7,207 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.3.3/papaparse.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
-
+        <style type="text/css">
+            /*----- Tabs -----*/
+.tabs {
+    width:100%;
+    display:inline-block;
+}
+ 
+    /*----- Tab Links -----*/
+    /* Clearfix */
+    .tab-links:after {
+        display:block;
+        clear:both;
+        content:'';
+    }
+ 
+    .tab-links li {
+        margin:0px 5px;
+        float:left;
+        list-style:none;
+    }
+ 
+        .tab-links a {
+            padding:9px 15px;
+            display:inline-block;
+            border-radius:3px 3px 0px 0px;
+            background:#7FB5DA;
+            font-size:16px;
+            font-weight:600;
+            color:#4c4c4c;
+            transition:all linear 0.15s;
+        }
+ 
+        .tab-links a:hover {
+            background:#a7cce5;
+            text-decoration:none;
+        }
+ 
+    li.active a, li.active a:hover {
+        background:#fff;
+        color:#4c4c4c;
+        border: solid #7FB5DA 1px;
+    }
+ 
+    /*----- Content of Tabs -----*/
+    .tab-content {
+        padding:15px;
+        border-radius:3px;
+        box-shadow:-1px 1px 1px rgba(0,0,0,0.15);
+        background:#fff;
+    }
+ 
+        .tab {
+            display:none;
+        }
+ 
+        .tab.active {
+            display:block;
+        }
+        </style>
 	</head>
 	<body>
 
 	<div class="input-area" id="input-local" style="display: block;">
-							
-							<div class="text-center">
-								Seleziona il file con i dati di telemetria
-							</div>
+						
+								Seleziona il file con i dati di telemetria&nbsp;
 
-							<input type="file" id="files" multiple="false">
+							<input type="file" id="files" style="width: 160px;">
+                            <button id="submit" class="green">Carica</button>
 						</div>
-                        <div>
+						
+
+                        <div class="tabs">
+    <ul class="tab-links">
+        <li class="active"><a href="#tab1" id="tab1_label">Lettura #1</a></li>
+        <li><a href="#tab2" id="tab2_label">Lettura #2</a></li>
+        <li><a href="#tab3" id="tab3_label">Lettura #3</a></li>
+    </ul>
+ 
+    <div class="tab-content">
+        <div id="tab1" class="tab active">
+        <div>
                             Asse X:
-                            <select id="xAxis">
+                            <select id="xAxis1" onchange="renderFn(null,0); checkTimeControls(0);">
                                 <option value="RPM" selected="selected">RPM (x1000)</option>
+                                <option value="BANCO">Giri Banco</option>
                                 <option value="TIME">Tempo</option>
                             </select>
-                        </div>
-                        <div>
+                        &nbsp;
                             Risoluzione (letture al secondo):
-                            <select id="resolution">
+                            <select id="resolution1" onchange="renderFn(null,0);">
                                 <option value=10>10</option>
                                 <option value=5>5</option>
                                 <option value=2 selected="selected">2</option>
                                 <option value=1>1</option>
                             </select>
+                        <span id="otherSeries1" style="display: none;">
+                        &nbsp;&nbsp;
+                        Mostra RPM: <input type="checkbox" id="showRpm1" onchange="renderFn(null,0);">
+                        &nbsp;&nbsp;
+                        Mostra Giri Banco: <input type="checkbox" id="showBanco1" onchange="renderFn(null,0);">
+                        &nbsp;
+                        </span>
+                        <button class="green" onclick="clearFile(0);">Cancella</button>
                         </div>
-
-						<button id="submit" class="green">Render</button>
-                        <div>
-                        <table id="info" style="position: absolute; left: 70%; top: 1%; font-size: 12px; line-height: 0.8;">
-                        </table>    
+            <div style="width:100%;">
+                            <canvas id="canvas_tab1"></canvas>
+            </div>
+            <table id="info1" style="position: absolute; left: 70%; top: 1%; font-size: 12px; line-height: 0.8;">
+                        </table>
+        </div>
+ 
+        <div id="tab2" class="tab">
+        <div>
+                            Asse X:
+                            <select id="xAxis2" onchange="renderFn(null,1); checkTimeControls(1);">
+                                <option value="RPM" selected="selected">RPM (x1000)</option>
+                                <option value="BANCO">Giri Banco</option>
+                                <option value="TIME">Tempo</option>
+                            </select>
+                        &nbsp;
+                            Risoluzione (letture al secondo):
+                            <select id="resolution2" onchange="renderFn(null,1);">
+                                <option value=10>10</option>
+                                <option value=5>5</option>
+                                <option value=2 selected="selected">2</option>
+                                <option value=1>1</option>
+                            </select>
+                        <span id="otherSeries2" style="display: none;">
+                        &nbsp;&nbsp;
+                        Mostra RPM: <input type="checkbox" id="showRpm2" onchange="renderFn(null,1);">
+                        &nbsp;&nbsp;
+                        Mostra Giri Banco: <input type="checkbox" id="showBanco2" onchange="renderFn(null,1);">
+                        &nbsp;
+                        </span>
+                        <button class="green" onclick="clearFile(1);">Cancella</button>
+                        
                         </div>
-                        <div style="width:100%;">
-                            <canvas id="canvas"></canvas>
+            <div style="width:100%;">
+                            <canvas id="canvas_tab2"></canvas>
+            </div>
+            <table id="info2" style="position: absolute; left: 70%; top: 1%; font-size: 12px; line-height: 0.8;">
+                        </table>
+        </div>
+ 
+        <div id="tab3" class="tab">
+        <div>
+                            Asse X:
+                            <select id="xAxis3" onchange="renderFn(null,2); checkTimeControls(2);">
+                                <option value="RPM" selected="selected">RPM (x1000)</option>
+                                <option value="BANCO">Giri Banco</option>
+                                <option value="TIME">Tempo</option>
+                            </select>
+                        &nbsp;
+                            Risoluzione (letture al secondo):
+                            <select id="resolution3" onchange="renderFn(null,2);">
+                                <option value=10>10</option>
+                                <option value=5>5</option>
+                                <option value=2 selected="selected">2</option>
+                                <option value=1>1</option>
+                            </select>
+                        <span id="otherSeries3" style="display: none;">
+                        &nbsp;&nbsp;
+                        Mostra RPM: <input type="checkbox" id="showRpm3" onchange="renderFn(null,2);">
+                        &nbsp;&nbsp;
+                        Mostra Giri Banco: <input type="checkbox" id="showBanco3" onchange="renderFn(null,2);">
+                        &nbsp;
+                        </span>
+                        <button class="green" onclick="clearFile(2);">Cancella</button>
                         </div>
+            <div style="width:100%;">
+                            <canvas id="canvas_tab3"></canvas>
+            </div>
+            <table id="info3" style="position: absolute; left: 70%; top: 1%; font-size: 12px; line-height: 0.8;">
+                        </table>
+        </div>
+    </div>
+</div>
 	</body>
 	<script>
-    var config = {
+    var file1, file2, file3;
+
+    function clearFile(tab) {
+        switch(tab) {
+            case 0:
+                file1 = null;
+                break;
+            case 1:
+                file2 = null;
+                break;
+            case 2:
+                file3 = null;
+                break; 
+        }
+        $("#tab"+(tab+1)+"_label").text('Lettura #'+(tab+1));
+        window.myLines[tab].config.data = {labels: [], datasets: []};
+        window.myLines[tab].update();
+        $("#info"+(tab+1)).empty();
+    }
+
+    function buildGraphConfig() {
+    return {
             type: 'line',
             data: {},
             options: {
@@ -84,7 +245,8 @@
                     }]
                 }
             }
-        };
+        }
+    };
 
 	function errorFn(err, file)
 {
@@ -113,22 +275,74 @@ function enableButton()
 	$('#submit').prop('disabled', false);
 }
 
-function completeFn(results)
+function checkTimeControls(tab) {
+    var xAxis = $('#xAxis'+(tab+1)).val();
+    if (xAxis == "TIME") {
+        $('#otherSeries'+(tab+1)).css("display", "inline");
+    } else {
+        $('#otherSeries'+(tab+1)).css("display", "none");
+    }
+}
+
+function completeFn(results) {
+    if (!file1) {
+        file1 = results;
+        $("#tab1_label").text($('#files')[0].files[0].name);
+        renderFn(results, 0);
+    } else if (!file2) {
+        file2 = results;
+        $("#tab2_label").text($('#files')[0].files[0].name);
+        renderFn(results, 1);
+    } else if (!file3) {
+        file3 = results;
+        $("#tab3_label").text($('#files')[0].files[0].name);
+        renderFn(results, 2);
+    } else {
+        alert('Liberare uno dei tab prima di caricare altri file');
+        return;
+    }
+    $('#files').val(null);
+}
+
+function renderFn(results, tab)
 {
-    var resolution = $('#resolution').val();
-    var xAxis = $('#xAxis').val();
+    if (!results) {
+        results = eval('file'+(tab+1));
+    }
+
+    if (!results) {
+        return;
+    }
+
+    var config = window.myLines[tab].config;
+    var resolution = $('#resolution'+(tab+1)).val();
+    var xAxis = $('#xAxis'+(tab+1)).val();
     var infoData = results.data.filter(function(elem) { return  elem.length < 5 });
-    $("#info").empty();
+    $("#info"+(tab+1)).empty();
     infoData.forEach(function(elem){
-        $("#info").append("<tr><td>"+elem[0]+":</td><td style='border: 1px solid; padding: 3px;'>"+elem[1]+"</td></tr>");
+        $("#info"+(tab+1)).append("<tr><td>"+elem[0]+":</td><td style='border: 1px solid; padding: 3px;'>"+elem[1]+"</td></tr>");
     });
     var data = results.data.filter(function(elem) { return  elem.length == 5 && Number.isInteger(elem[0]*resolution)});
     var timeSeries = data.map(function(elem) { return elem[0]});
     var rpmSeries = data.map(function(elem) { return Math.round(elem[1])/1000});
+    var bancoSeries = data.map(function(elem) { return Math.round(elem[2])/1000});
     var coppiaSeries = data.map(function(elem) { return elem[3].toFixed(3)});
     var cavalliSeries = data.map(function(elem) { return elem[4].toFixed(3)});
+    var showRpm = $('#showRpm'+(tab+1)).prop('checked')
+    var showBanco = $('#showBanco'+(tab+1)).prop('checked')
+
+    var labelSeries = rpmSeries;
+    switch(xAxis) {
+        case "TIME":
+            labelSeries = timeSeries;
+            break;
+        case "BANCO":
+            labelSeries = bancoSeries;
+            break;
+    }
+
     var lineChartData = {
-        labels: xAxis == "TIME" ? timeSeries : rpmSeries,
+        labels: labelSeries,
         datasets: [
         {
             label: "Cavalli",
@@ -145,27 +359,44 @@ function completeFn(results)
         }]
     };
     if (xAxis == "TIME") {
-        lineChartData.datasets.push({
-            label: "RPM (x1000)",
-            borderColor: 'green',
-            backgroundColor: 'green',
-            fill: false,
-            data: rpmSeries
-        })
+        if (showRpm) {
+            lineChartData.datasets.push({
+                label: "RPM (x1000)",
+                borderColor: 'green',
+                backgroundColor: 'green',
+                fill: false,
+                data: rpmSeries
+            })
+        }
+        if (showBanco) {
+            lineChartData.datasets.push({
+                label: "Giri Banco (x1000)",
+                borderColor: 'orange',
+                backgroundColor: 'orange',
+                fill: false,
+                data: bancoSeries
+            })
+        }
     }
     config.data = lineChartData
     config.options.scales.xAxes[0].scaleLabel.labelString = $("#xAxis option:selected").text();
-    window.myLine.update();
+    window.myLines[tab].update();
 	console.log("    Results:", results);
 
 }
 
 		$(function()
 {
-    var ctx = document.getElementById("canvas").getContext("2d");
-    window.myLine = new Chart(ctx, config);
-$('#submit').click(function()
-	{
+    var ctx1 = document.getElementById("canvas_tab1").getContext("2d");
+    var ctx2 = document.getElementById("canvas_tab2").getContext("2d");
+    var ctx3 = document.getElementById("canvas_tab3").getContext("2d");
+    window.myLines = [];
+    window.myLines[0] = new Chart(ctx1, buildGraphConfig());
+    window.myLines[1] = new Chart(ctx2, buildGraphConfig());
+    window.myLines[2] = new Chart(ctx3, buildGraphConfig());
+
+    $('#submit').click(function()
+    	{
 	
 		stepped = 0;
 		rowCount = 0;
@@ -177,7 +408,7 @@ $('#submit').click(function()
 
 		if (!$('#files')[0].files.length)
 			{
-				alert("Please choose at least one file to parse.");
+				alert("Please choose one file to parse.");
 				return enableButton();
 			}
 			
@@ -192,6 +423,34 @@ $('#submit').click(function()
 			});
 
 	});
+
+    $('.tabs .tab-links a').on('click', function(e)  {
+        var currentAttrValue = $(this).attr('href');
+ 
+        // Show/Hide Tabs
+        $('.tabs ' + currentAttrValue).show().siblings().hide();
+ 
+        // Change/remove current tab to active
+        $(this).parent('li').addClass('active').siblings().removeClass('active');
+ 
+        e.preventDefault();
+    });
+
+    $(document).keydown(function(e) {
+        switch(e.which) {
+            case 37: // left
+            $('.tab-links > li.active').prev().find('a').click()
+            break;
+
+            case 39: // right
+            $('.tab-links > li.active').next().find('a').click()
+            break;
+
+            default: return; // exit this handler for other keys
+        }
+        e.preventDefault(); // prevent the default action (scroll / move caret)
+    }); 
+
 });
 
 
