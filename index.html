@@ -83,6 +83,9 @@
         <li class="active"><a href="#tab1" id="tab1_label">Lettura #1</a></li>
         <li><a href="#tab2" id="tab2_label">Lettura #2</a></li>
         <li><a href="#tab3" id="tab3_label">Lettura #3</a></li>
+        <li><a href="#tabCavalli" id="tabCavalliLabel">Confronta Cavalli</a></li>
+        <li><a href="#tabCoppia" id="tabCavalliLabel">Confronta Coppia</a></li>
+        <li><a href="#tabGiri" id="tabGiriLabel">Confronta Giri</a></li>
     </ul>
  
     <div class="tab-content">
@@ -101,7 +104,12 @@
                                 <option value=5>5</option>
                                 <option value=2 selected="selected">2</option>
                                 <option value=1>1</option>
-                            </select>
+                            </select>&nbsp;&nbsp;<button class="green" onclick="clearFile(0);">Cancella</button>
+                            </div><div>
+                        Mostra Cavalli: <input type="checkbox" id="showCavalli1" checked="checked" onchange="renderFn(null,0);">
+                        &nbsp;&nbsp;
+                        Mostra Coppia: <input type="checkbox" id="showCoppia1" checked="checked" onchange="renderFn(null,0);">
+                        &nbsp;
                         <span id="otherSeries1" style="display: none;">
                         &nbsp;&nbsp;
                         Mostra RPM: <input type="checkbox" id="showRpm1" onchange="renderFn(null,0);">
@@ -109,7 +117,7 @@
                         Mostra Giri Banco: <input type="checkbox" id="showBanco1" onchange="renderFn(null,0);">
                         &nbsp;
                         </span>
-                        <button class="green" onclick="clearFile(0);">Cancella</button>
+                        
                         </div>
             <div style="width:100%;">
                             <canvas id="canvas_tab1"></canvas>
@@ -133,7 +141,13 @@
                                 <option value=5>5</option>
                                 <option value=2 selected="selected">2</option>
                                 <option value=1>1</option>
-                            </select>
+                            </select>&nbsp;&nbsp;<button class="green" onclick="clearFile(1);">Cancella</button>
+                            </div><div>
+                            
+                        Mostra Cavalli: <input type="checkbox" id="showCavalli2" checked="checked" onchange="renderFn(null,1);">
+                        &nbsp;&nbsp;
+                        Mostra Coppia: <input type="checkbox" id="showCoppia2" checked="checked" onchange="renderFn(null,1);">
+                        &nbsp;
                         <span id="otherSeries2" style="display: none;">
                         &nbsp;&nbsp;
                         Mostra RPM: <input type="checkbox" id="showRpm2" onchange="renderFn(null,1);">
@@ -141,7 +155,7 @@
                         Mostra Giri Banco: <input type="checkbox" id="showBanco2" onchange="renderFn(null,1);">
                         &nbsp;
                         </span>
-                        <button class="green" onclick="clearFile(1);">Cancella</button>
+                        
                         
                         </div>
             <div style="width:100%;">
@@ -166,7 +180,12 @@
                                 <option value=5>5</option>
                                 <option value=2 selected="selected">2</option>
                                 <option value=1>1</option>
-                            </select>
+                            </select>&nbsp;&nbsp;<button class="green" onclick="clearFile(2);">Cancella</button>
+                        </div><div>
+                        Mostra Cavalli: <input type="checkbox" id="showCavalli3" checked="checked" onchange="renderFn(null,2);">
+                        &nbsp;&nbsp;
+                        Mostra Coppia: <input type="checkbox" id="showCoppia3" checked="checked" onchange="renderFn(null,2);">
+                        &nbsp;
                         <span id="otherSeries3" style="display: none;">
                         &nbsp;&nbsp;
                         Mostra RPM: <input type="checkbox" id="showRpm3" onchange="renderFn(null,2);">
@@ -174,7 +193,7 @@
                         Mostra Giri Banco: <input type="checkbox" id="showBanco3" onchange="renderFn(null,2);">
                         &nbsp;
                         </span>
-                        <button class="green" onclick="clearFile(2);">Cancella</button>
+                        
                         </div>
             <div style="width:100%;">
                             <canvas id="canvas_tab3"></canvas>
@@ -182,11 +201,55 @@
             <table id="info3" style="position: absolute; left: 70%; top: 1%; font-size: 12px; line-height: 0.8;">
                         </table>
         </div>
+        <div id="tabCavalli" class="tab">
+        Risoluzione (letture al secondo):
+                            <select id="resolutionCavalli" onchange="renderConfrontoCavalli()">
+                                <option value=10>10</option>
+                                <option value=5>5</option>
+                                <option value=2 selected="selected">2</option>
+                                <option value=1>1</option>
+                            </select>
+            <div style="width:100%;">
+                            <canvas id="canvas_cavalli"></canvas>
+            </div>
+        </div>
+        <div id="tabCoppia" class="tab">
+        Risoluzione (letture al secondo):
+                            <select id="resolutionCoppia" onchange="renderConfrontoCoppia()">
+                                <option value=10>10</option>
+                                <option value=5>5</option>
+                                <option value=2 selected="selected">2</option>
+                                <option value=1>1</option>
+                            </select>
+                            
+            <div style="width:100%;">
+                            <canvas id="canvas_coppia"></canvas>
+            </div>
+        </div>
+        <div id="tabGiri" class="tab">
+        Risoluzione (letture al secondo):
+                            <select id="resolutionGiri" onchange="renderConfrontoGiri()">
+                                <option value=10>10</option>
+                                <option value=5>5</option>
+                                <option value=2 selected="selected">2</option>
+                                <option value=1>1</option>
+                            </select>
+                            &nbsp;
+                            Offset #1:<input type="text" size="5" id="offset1" onchange="renderConfrontoGiri()">
+                            &nbsp;
+                            Offset #2:<input type="text" size="5" id="offset2" onchange="renderConfrontoGiri()">
+                            &nbsp;
+                            Offset #3:<input type="text" size="5" id="offset3" onchange="renderConfrontoGiri()">
+            <div style="width:100%;">
+                            <canvas id="canvas_giri"></canvas>
+            </div>
+        </div>
     </div>
 </div>
 	</body>
 	<script>
     var file1, file2, file3;
+    var maxYValue = 1;
 
     function clearFile(tab) {
         switch(tab) {
@@ -232,20 +295,64 @@
                     xAxes: [{
                         display: true,
                         scaleLabel: {
-                            display: true,
-                            labelString: $("#xAxis option:selected").text()
+                            display: true
                         }
                     }],
                     yAxes: [{
+                        id: 'y1',
                         display: true,
+                        position:'left',
                         scaleLabel: {
                             display: true,
-                            labelString: 'Valore'
+                            labelString: 'Cavalli'
+                        },
+                        gridLines: {
+                            display: true
                         },
                         ticks: {
-                            beginAtZero: true,
-                            max: 22,
-                            stepSize: 2
+                            min: 0
+                        }
+                    },{
+                        id: 'y2',
+                        display: true,
+                        position:'right',
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Coppia'
+                        },
+                        gridLines: {
+                            display: false
+                        },
+                        ticks: {
+                            min: 0
+                        }
+                    },{
+                        id: 'y3',
+                        display: false,
+                        position:'left',
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Giri/min'
+                        },
+                        gridLines: {
+                            display: false
+                        },
+                        ticks: {
+                            min: 0
+                        }
+                    },{
+                        id: 'y4',
+                        display: false,
+                        position:'left',
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Coppia'
+                        },
+                        gridLines: {
+                            display: true
+                        },
+                        ticks: {
+                            min: 0
                         }
                     }]
                 }
@@ -307,6 +414,394 @@ function completeFn(results) {
         return;
     }
     $('#files').val(null);
+    setTimeout(renderConfrontoCoppia(),1);
+    setTimeout(renderConfrontoCavalli(),1);
+    setTimeout(renderConfrontoGiri(),1);
+}
+
+function arrayUnique(array) {
+    var a = array.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i] === a[j])
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+}
+
+function renderConfrontoGiri() {
+    var config = window.confrontoGiri.config;
+    config.options.scales.yAxes[2].display=true;
+    config.options.scales.yAxes[0].display=false;
+    config.options.scales.yAxes[1].display=false;
+    var resolution = $('#resolutionGiri').val();
+    var offset1 = Number($('#offset1').val().replace(',','.'));
+    var offset2 = Number($('#offset2').val().replace(',','.'));
+    var offset3 = Number($('#offset3').val().replace(',','.'));
+
+    var xAxisData = [];
+    var file1Values, file2Values, file3Values;
+    if (file1) {
+        file1Values = file1.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution);
+        });
+        file1Values = file1Values.map(function (elem) {
+            var copy = elem.slice();
+            if (!Number.isNaN(offset1)) {
+                copy[0] = copy[0]+offset1;
+            }
+            return copy;
+        });
+        xAxisData = xAxisData.concat(file1Values.map(function(elem) { 
+            return elem[0];
+        }));
+    }
+    if (file2) {
+        file2Values = file2.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution); 
+        });
+        file2Values = file2Values.map(function (elem) {
+            var copy = elem.slice();
+            if (!Number.isNaN(offset2)) {
+                copy[0] = copy[0]+offset2;
+            }
+            return copy;
+        });
+        xAxisData = xAxisData.concat(file2Values.map(function(elem) { 
+            return elem[0];
+        }));
+    }
+    if (file3) {
+        file3Values = file3.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution); 
+        });
+        file3Values = file3Values.map(function (elem) {
+            var copy = elem.slice();
+            if (!Number.isNaN(offset3)) {
+                copy[0] = copy[0]+offset3;
+            }
+            return copy;
+        });
+        xAxisData = xAxisData.concat(file3Values.map(function(elem) { 
+            return elem[0];
+        }));
+    }
+
+    xAxisData = arrayUnique(xAxisData);
+    xAxisData = xAxisData.sort(function(a,b) {
+        if (a < b)
+            return -1;
+        if (a > b)
+            return 1;
+        return 0;
+    });
+
+    var datasets = []
+    var lineChartData = {
+        labels: xAxisData,
+        datasets: datasets
+    };
+
+    if (file1) {
+        var file1Data = xAxisData.map(function(xValue) {
+            var value = file1Values.filter(function(elem) {
+                return elem[0] == xValue;
+            });
+            return value.length > 0 ? value[0][1] : null;
+        });
+        datasets.push({
+            label: "Lettura #1 -"+getComment(file1),
+            borderColor: 'blue',
+            backgroundColor: 'blue',
+            fill: false,
+            data: file1Data,
+            pointRadius: 0,
+            yAxisID: 'y3',
+            borderWidth: 1,
+            spanGaps: true
+        });
+    }
+
+    if (file2) {
+        var file2Data = xAxisData.map(function(xValue) {
+            var value = file2Values.filter(function(elem) {
+                return elem[0] == xValue;
+            });
+            return value.length > 0 ? value[0][1] : null;
+        });
+        datasets.push({
+            label: "Lettura #2 -"+getComment(file2),
+            borderColor: 'red',
+            backgroundColor: 'red',
+            fill: false,
+            data: file2Data,
+            pointRadius: 0,
+            yAxisID: 'y3',
+            borderWidth: 1,
+            spanGaps: true
+        });
+    }
+
+    if (file3) {
+        var file3Data = xAxisData.map(function(xValue) {
+            var value = file3Values.filter(function(elem) {
+                return elem[0] == xValue;
+            });
+            return value.length > 0 ? value[0][1] : null;
+        });
+        datasets.push({
+            label: "Lettura #3 -"+getComment(file3),
+            borderColor: 'green',
+            backgroundColor: 'green',
+            fill: false,
+            data: file3Data,
+            pointRadius: 0,
+            yAxisID: 'y3',
+            borderWidth: 1,
+            spanGaps: true
+        });
+    }
+
+
+    config.data = lineChartData;
+    window.confrontoGiri.update();
+}
+
+function renderConfrontoCavalli() {
+    var config = window.confrontoCavalli.config;
+    config.options.scales.yAxes[1].display=false;
+    var resolution = $('#resolutionCavalli').val();
+    var xAxisData = [];
+    if (file1) {
+        xAxisData = xAxisData.concat(file1.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution);
+        }).map(function(elem) { 
+            return Math.round(elem[1])/1000;
+        }));
+    }
+    if (file2) {
+        xAxisData = xAxisData.concat(file2.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution); 
+        }).map(function(elem) { 
+            return Math.round(elem[1])/1000;
+        }));
+    }
+    if (file3) {
+        xAxisData = xAxisData.concat(file3.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution); 
+        }).map(function(elem) { 
+            return Math.round(elem[1])/1000;
+        }));
+    }
+
+    xAxisData = arrayUnique(xAxisData);
+    xAxisData = xAxisData.filter(function(elem) { return  elem >= 0 });
+    xAxisData = xAxisData.sort(function(a,b) {
+        if (a < b)
+            return -1;
+        if (a > b)
+            return 1;
+        return 0;
+    });
+    datasets = [];
+    var lineChartData = {
+        labels: xAxisData,
+        datasets: datasets
+    };
+    if (file1) {
+        var file1Values = file1.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution);
+        });
+        var file1Data = xAxisData.map(function(xValue) {
+            var value = file1Values.filter(function(elem) {
+                return Math.round(elem[1])/1000 == xValue && elem[4] > 0 && elem[3] > 0;
+            });
+            return value.length > 0 ? value[0][4] : null;
+        });
+        datasets.push({
+            label: "Lettura #1 -"+getComment(file1),
+            borderColor: 'blue',
+            backgroundColor: 'blue',
+            fill: false,
+            data: file1Data,
+            pointRadius: 0,
+            yAxisID: 'y1',
+            borderWidth: 1,
+            spanGaps: true
+        });
+    }
+
+    if (file2) {
+        var file2Values = file2.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution);
+        });
+        var file2Data = xAxisData.map(function(xValue) {
+            var value = file2Values.filter(function(elem) {
+                return Math.round(elem[1])/1000 == xValue && elem[4] > 0 && elem[3] > 0;
+            });
+            return value.length > 0 ? value[0][4] : null;
+        });
+        datasets.push({
+            label: "Lettura #2 -"+getComment(file2),
+            borderColor: 'red',
+            backgroundColor: 'red',
+            fill: false,
+            data: file2Data,
+            pointRadius: 0,
+            yAxisID: 'y1',
+            borderWidth: 1,
+            spanGaps: true
+        });
+    }
+
+    if (file3) {
+        var file3Values = file3.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution);
+        });
+        var file3Data = xAxisData.map(function(xValue) {
+            var value = file3Values.filter(function(elem) {
+                return Math.round(elem[1])/1000 == xValue && elem[4] > 0 && elem[3] > 0;
+            });
+            return value.length > 0 ? value[0][4] : null;
+        });
+        datasets.push({
+            label: "Lettura #3 -"+getComment(file3),
+            borderColor: 'green',
+            backgroundColor: 'green',
+            fill: false,
+            data: file3Data,
+            pointRadius: 0,
+            yAxisID: 'y1',
+            borderWidth: 1,
+            spanGaps: true
+        });
+    }
+    config.data = lineChartData;
+    window.confrontoCavalli.update();
+}
+
+function renderConfrontoCoppia() {
+    var config = window.confrontoCoppia.config;
+    config.options.scales.yAxes[0].display=false;
+    config.options.scales.yAxes[1].display=false;
+    config.options.scales.yAxes[3].display=true;
+    var resolution = $('#resolutionCoppia').val();
+    var xAxisData = [];
+    if (file1) {
+        xAxisData = xAxisData.concat(file1.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution);
+        }).map(function(elem) { 
+            return Math.round(elem[1])/1000;
+        }));
+    }
+    if (file2) {
+        xAxisData = xAxisData.concat(file2.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution); 
+        }).map(function(elem) { 
+            return Math.round(elem[1])/1000;
+        }));
+    }
+    if (file3) {
+        xAxisData = xAxisData.concat(file3.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution); 
+        }).map(function(elem) { 
+            return Math.round(elem[1])/1000;
+        }));
+    }
+
+    xAxisData = arrayUnique(xAxisData);
+    xAxisData = xAxisData.filter(function(elem) { return  elem >= 0 });
+    xAxisData = xAxisData.sort(function(a,b) {
+        if (a < b)
+            return -1;
+        if (a > b)
+            return 1;
+        return 0;
+    });
+    datasets = [];
+    var lineChartData = {
+        labels: xAxisData,
+        datasets: datasets
+    };
+    if (file1) {
+        var file1Values = file1.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution);
+        });
+        var file1Data = xAxisData.map(function(xValue) {
+            var value = file1Values.filter(function(elem) {
+                return Math.round(elem[1])/1000 == xValue && elem[4] > 0 && elem[3] > 0;
+            });
+            return value.length > 0 ? value[0][3] : null;
+        });
+        datasets.push({
+            label: "Lettura #1 -"+getComment(file1),
+            borderColor: 'blue',
+            backgroundColor: 'blue',
+            fill: false,
+            data: file1Data,
+            pointRadius: 0,
+            yAxisID: 'y4',
+            borderWidth: 1,
+            spanGaps: true
+        });
+    }
+
+    if (file2) {
+        var file2Values = file2.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution);
+        });
+        var file2Data = xAxisData.map(function(xValue) {
+            var value = file2Values.filter(function(elem) {
+                return Math.round(elem[1])/1000 == xValue && elem[4] > 0 && elem[3] > 0;
+            });
+            return value.length > 0 ? value[0][3] : null;
+        });
+        datasets.push({
+            label: "Lettura #2 -"+getComment(file2),
+            borderColor: 'red',
+            backgroundColor: 'red',
+            fill: false,
+            data: file2Data,
+            pointRadius: 0,
+            yAxisID: 'y4',
+            borderWidth: 1,
+            spanGaps: true
+        });
+    }
+
+    if (file3) {
+        var file3Values = file3.data.filter(function(elem) { 
+            return  elem.length == 5 && Number.isInteger(elem[0]*resolution);
+        });
+        var file3Data = xAxisData.map(function(xValue) {
+            var value = file3Values.filter(function(elem) {
+                return Math.round(elem[1])/1000 == xValue && elem[4] > 0 && elem[3] > 0;
+            });
+            return value.length > 0 ? value[0][3] : null;
+        });
+        datasets.push({
+            label: "Lettura #3 -"+getComment(file3),
+            borderColor: 'green',
+            backgroundColor: 'green',
+            fill: false,
+            data: file3Data,
+            pointRadius: 0,
+            yAxisID: 'y4',
+            borderWidth: 1,
+            spanGaps: true
+        });
+    }
+    config.data = lineChartData;
+    window.confrontoCoppia.update();
+}
+
+function getComment(results) {
+    var obj = results.data.filter(function(elem) {
+        return elem.length == 2 && elem[0] == 'Comment'
+    });
+    return obj && obj[0] ? obj[0][1] : ""
 }
 
 function renderFn(results, tab)
@@ -328,13 +823,38 @@ function renderFn(results, tab)
         $("#info"+(tab+1)).append("<tr><td>"+elem[0]+":</td><td style='border: 1px solid; padding: 3px;'>"+elem[1]+"</td></tr>");
     });
     var data = results.data.filter(function(elem) { return  elem.length == 5 && Number.isInteger(elem[0]*resolution)});
+    if (xAxis == 'RPM') {
+        data = data.filter(function(elem) { return  elem[4] > 0 && elem[3] > 0 });
+        data = data.sort(function(a,b) {
+            if (a[1] < b[1])
+                return -1;
+            if (a[1] > b[1])
+                return 1;
+            return 0;
+        });
+    } else if (xAxis == 'BANCO') {
+        data = data.filter(function(elem) { return  elem[4] > 0 && elem[3] > 0 });
+        data = data.sort(function(a,b) {
+            if (a[2] < b[2])
+                return -1;
+            if (a[2] > b[2])
+                return 1;
+            return 0;
+        });
+    }
+
     var timeSeries = data.map(function(elem) { return elem[0]});
     var rpmSeries = data.map(function(elem) { return Math.round(elem[1])/1000});
     var bancoSeries = data.map(function(elem) { return Math.round(elem[2])/1000});
     var coppiaSeries = data.map(function(elem) { return elem[3].toFixed(3)});
     var cavalliSeries = data.map(function(elem) { return elem[4].toFixed(3)});
-    var showRpm = $('#showRpm'+(tab+1)).prop('checked')
-    var showBanco = $('#showBanco'+(tab+1)).prop('checked')
+    var showCavalli = $('#showCavalli'+(tab+1)).prop('checked');
+    var showCoppia = $('#showCoppia'+(tab+1)).prop('checked');
+    var showRpm = $('#showRpm'+(tab+1)).prop('checked');
+    var showBanco = $('#showBanco'+(tab+1)).prop('checked');
+    var maxCavalli = Math.ceil(Math.max.apply(Math, cavalliSeries))+1;
+    var maxCoppia = Math.ceil(Math.max.apply(Math, coppiaSeries))+1;
+    var maxRpm = Math.ceil(Math.max.apply(Math, rpmSeries.concat(bancoSeries)))+1;
 
     var labelSeries = rpmSeries;
     switch(xAxis) {
@@ -349,29 +869,47 @@ function renderFn(results, tab)
     var lineChartData = {
         labels: labelSeries,
         datasets: [
-        {
+        ]
+    };
+    if (showCavalli) {
+        lineChartData.datasets.push({
             label: "Cavalli",
             borderColor: 'blue',
             backgroundColor: 'blue',
             fill: false,
-            data: cavalliSeries
-        },{
+            data: cavalliSeries,
+            pointRadius: 0,
+            yAxisID: 'y1',
+            borderWidth: 1
+        });
+    }
+    if (showCoppia) {
+        lineChartData.datasets.push({
             label: "Coppia",
             borderColor: 'red',
             backgroundColor: 'red',
             fill: false,
-            data: coppiaSeries
-        }]
-    };
+            data: coppiaSeries,
+            pointRadius: 0,
+            yAxisID: 'y2',
+            borderWidth: 1
+        });
+    }
+
+    config.options.scales.yAxes[2].display = false
     if (xAxis == "TIME") {
+        config.options.scales.yAxes[2].display = true
         if (showRpm) {
             lineChartData.datasets.push({
                 label: "RPM (x1000)",
                 borderColor: 'green',
                 backgroundColor: 'green',
                 fill: false,
-                data: rpmSeries
-            })
+                data: rpmSeries,
+                pointRadius: 0,
+                yAxisID: 'y3',
+            borderWidth: 1
+            });
         }
         if (showBanco) {
             lineChartData.datasets.push({
@@ -379,15 +917,22 @@ function renderFn(results, tab)
                 borderColor: 'orange',
                 backgroundColor: 'orange',
                 fill: false,
-                data: bancoSeries
-            })
+                data: bancoSeries,
+                pointRadius: 0,
+                yAxisID: 'y3',
+            borderWidth: 1
+            });
         }
     }
     config.data = lineChartData
-    config.options.scales.xAxes[0].scaleLabel.labelString = $("#xAxis option:selected").text();
-    window.myLines[tab].update();
-	console.log("    Results:", results);
-
+    config.options.scales.xAxes[0].scaleLabel.labelString = $("#xAxis"+(tab+1)+" option:selected").text();
+    config.options.scales.yAxes[0].ticks.max = maxCavalli
+    config.options.scales.yAxes[0].ticks.stepSize = maxCavalli/10
+    config.options.scales.yAxes[1].ticks.max = maxCoppia
+    config.options.scales.yAxes[1].ticks.stepSize = maxCoppia/10
+    config.options.scales.yAxes[2].ticks.max = maxRpm
+    config.options.scales.yAxes[2].ticks.stepSize = maxRpm/10
+    window.myLines[tab].update(0);
 }
 
 		$(function()
@@ -395,10 +940,16 @@ function renderFn(results, tab)
     var ctx1 = document.getElementById("canvas_tab1").getContext("2d");
     var ctx2 = document.getElementById("canvas_tab2").getContext("2d");
     var ctx3 = document.getElementById("canvas_tab3").getContext("2d");
+    var ctxCavalli = document.getElementById("canvas_cavalli").getContext("2d");
+    var ctxCoppia = document.getElementById("canvas_coppia").getContext("2d");
+    var ctxGiri = document.getElementById("canvas_giri").getContext("2d");
     window.myLines = [];
     window.myLines[0] = new Chart(ctx1, buildGraphConfig());
     window.myLines[1] = new Chart(ctx2, buildGraphConfig());
     window.myLines[2] = new Chart(ctx3, buildGraphConfig());
+    window.confrontoCavalli = new Chart(ctxCavalli, buildGraphConfig());
+    window.confrontoCoppia = new Chart(ctxCoppia, buildGraphConfig());
+    window.confrontoGiri = new Chart(ctxGiri, buildGraphConfig());
 
     $('#submit').click(function()
     	{
